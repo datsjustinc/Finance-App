@@ -1,6 +1,6 @@
-# Personal Finance & Budget Tracker (C++)
+# Personal Finance & Budget Tracker (Java)
 
-This is a C++ application for managing personal finances, allowing users to track income, expenses, budgets, and savings goals. All data is stored **locally** in JSON files using the lightweight [nlohmann/json](https://github.com/nlohmann/json) library.
+This is a Java application for managing personal finances, allowing users to track income, expenses, budgets, and savings goals. All data is stored **locally** in JSON files using the lightweight [Gson](https://github.com/google/gson) library.
 
 ---
 
@@ -8,30 +8,25 @@ This is a C++ application for managing personal finances, allowing users to trac
 
 | File                          | Purpose                                                   |
 |-------------------------------|-----------------------------------------------------------|
-| `Transaction.h/.cpp`          | Represents a financial transaction (income or expense)    |
-| `Budget.h/.cpp`               | Represents monthly budget limits for different categories |
-| `SavingsGoal.h/.cpp`          | Represents savings goals (target amounts, deadlines)      |
-| `UserProfile.h/.cpp`          | Holds all user data: profile, transactions, budget, and goals |
-| `DataPersistenceManager.h/.cpp` | Provides save/load functionality for user profiles     |
-| `main.cpp`                    | Demonstrates creating, saving, and loading user data      |
+| `Transaction.java`            | Represents a financial transaction (income or expense)    |
+| `Budget.java`                 | Represents monthly budget limits for different categories |
+| `SavingsGoal.java`            | Represents savings goals (target amounts, deadlines)      |
+| `UserProfile.java`            | Holds all user data: name, income, currency, and categories |
+| `DataPersistenceManager.java` | Provides save/load functionality for user data using Gson |
+| `ReportGenerator.java`        | Generates monthly summaries and exports CSV reports       |
+| `Main.java`                   | Demonstrates creating, saving, and displaying user data   |
 
 ---
 
 ## Requirements
 
-- C++11 or higher
-- [nlohmann/json.hpp](https://github.com/nlohmann/json) (single header library)
+- Java 11 or higher
+- [Gson library](https://github.com/google/gson)
 
-### How to Get nlohmann/json
+### How to Get Gson
 
-- Download the file `json.hpp` from [here](https://github.com/nlohmann/json/releases/latest)
-- Place `json.hpp` in the project directory
-
-Alternatively, install via package manager:
-
-```bash
-sudo apt-get install nlohmann-json-dev
-```
+- Download the file `gson-2.10.1.jar` from [here](https://repo1.maven.org/maven2/com/google/code/gson/gson/2.10.1/gson-2.10.1.jar)
+- Move the file `gson-2.10.1.jar` into the same directory as your `.java` files
 
 ---
 
@@ -39,17 +34,33 @@ sudo apt-get install nlohmann-json-dev
 
 Open your terminal in the project directory and compile using:
 
+### On Windows (Git Bash or CMD):
 ```bash
-g++ main.cpp Transaction.cpp Budget.cpp SavingsGoal.cpp UserProfile.cpp DataPersistenceManager.cpp -o finance_app
+javac -cp ".;gson-2.10.1.jar" *.java
 ```
 
-Ensure that `json.hpp` is present in your project directory before compiling.
-
-Run the program with:
-
+### On macOS or Linux:
 ```bash
-./finance_app
+javac -cp ".:gson-2.10.1.jar" *.java
 ```
+
+---
+
+## Run Instructions
+
+Run the program after compiling using:
+
+### On Windows:
+```bash
+java -cp ".;gson-2.10.1.jar" Main
+```
+
+### On macOS or Linux:
+```bash
+java -cp ".:gson-2.10.1.jar" Main
+```
+
+Ensure that `gson-2.10.1.jar` is present in your project directory before compiling and running.
 
 ---
 
@@ -61,15 +72,16 @@ Run the program with:
 2. **Adds sample transactions** for income and expenses
 3. **Sets monthly budget limits** for various categories
 4. **Creates multiple savings goals** (e.g., Emergency Fund, New Laptop)
-5. **Saves all data** to a local JSON file (`user_profile.json`)
-6. **Loads data back** from the JSON file to confirm persistence
-7. **Displays user information** after loading to verify data integrity
+5. **Generates a monthly summary report**
+6. **Exports a detailed report** to `report.csv` containing transactions, budget, and savings
+7. **Displays user and financial summary information** in the terminal
 
 ---
 
 ## Notes
 
-- All data is saved **locally** on the user's machine; there is no cloud storage involved.
+- All data is saved **locally** on the user's machine in JSON format using Gson.
+- The generated CSV file is compatible with Excel or Google Sheets.
 - This version supports **only one user profile** (single-user design).
 - The JSON files are formatted to be human-readable for easy manual editing if necessary.
 
