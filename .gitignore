@@ -1,0 +1,18 @@
+# Ignore compiled class files
+*.class
+
+# Ignore CSV/Excel export files
+*.csv
+*.xlsx
+*.xls
+
+# Ignore local Gson JAR dependency
+gson-*.jar
+
+# Ignore IDE or OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore backup or temp files
+*~
+*.swp
