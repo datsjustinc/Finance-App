@@ -1,6 +1,9 @@
 # Ignore compiled class files
 *.class
 
+# Ignore Json data files
+*.json
+
 # Ignore CSV/Excel export files
 *.csv
 *.xlsx

@@ -2,6 +2,8 @@
 
 import java.util.Arrays;
 import java.util.List;
+import java.io.IOException;
+
 
 public class Main
 {
@@ -62,6 +64,20 @@ public class Main
         {
             System.out.println("Failed to export report.");
         }
+
+        try 
+        {
+            DataPersistenceManager.saveData("user_profile.json", user);
+            DataPersistenceManager.saveData("transactions.json", transactions);
+            DataPersistenceManager.saveData("budget.json", budget.categoryLimits);
+            DataPersistenceManager.saveData("savings_goals.json", savingsGoals);
+            System.out.println("All data saved to JSON files.");
+        } 
+        catch (IOException e)
+        {
+            System.err.println("Failed to save data: " + e.getMessage());
+        }
+
 
     }
 
