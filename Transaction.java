@@ -19,4 +19,46 @@ public class Transaction
         this.notes = notes;
     }
 
+        // Getters
+    public String getDate() {
+        return date;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public float getAmount() {
+        return amount;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    // Setters
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setAmount(float amount) {
+        this.amount = amount;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
 }
