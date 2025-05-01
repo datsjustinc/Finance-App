@@ -19,12 +19,26 @@ public class Main
             Arrays.asList("Food", "Rent", "Transportation", "Entertainment")
         );
 
-        // Print user profile details
+        // Print user profile details using getters
         System.out.println("=== User Profile ===");
-        System.out.println("Name: " + user.name);
-        System.out.println("Currency: " + user.currency);
-        System.out.println("Monthly Income: " + user.monthlyIncome);
-        System.out.println("Preferred Categories: " + user.preferredCategories);
+        System.out.println("Name: " + user.getName());
+        System.out.println("Currency: " + user.getCurrency());
+        System.out.println("Monthly Income: " + user.getMonthlyIncome());
+        System.out.println("Preferred Categories: " + user.getPreferredCategories());
+        System.out.println();
+
+
+        // Print user profile details using setters
+        System.out.println("=== User Profile (Setters) ===");
+        user.setName("Justin Doe");
+        user.setCurrency("EUR");
+        user.setMonthlyIncome(3500f);
+        user.setPreferredCategories(Arrays.asList("Food", "Rent", "Transportation", "Entertainment", "Savings"));
+
+        System.out.println("Name: " + user.getName());
+        System.out.println("Currency: " + user.getCurrency());
+        System.out.println("Monthly Income: " + user.getMonthlyIncome());
+        System.out.println("Preferred Categories: " + user.getPreferredCategories());
         System.out.println();
 
         // Sample transactions
