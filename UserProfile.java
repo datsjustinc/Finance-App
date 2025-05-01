@@ -18,5 +18,39 @@ public class UserProfile
         this.monthlyIncome = monthlyIncome;
         this.preferredCategories = preferredCategories;
     }
+    
+    // Getters
+    public String getName() {
+        return name;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public float getMonthlyIncome() {
+        return monthlyIncome;
+    }
+
+    public List<String> getPreferredCategories() {
+        return preferredCategories;
+    }
+
+    // Setters
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public void setMonthlyIncome(float monthlyIncome) {
+        this.monthlyIncome = monthlyIncome;
+    }
+
+    public void setPreferredCategories(List<String> preferredCategories) {
+        this.preferredCategories = preferredCategories;
+    }
 
 }
