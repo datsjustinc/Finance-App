@@ -12,6 +12,9 @@ public class Transaction
     // Constructor to initialize a transaction
     public Transaction(String date, String type, String category, float amount, String notes)
     {
+        if (date == null || type == null || category == null || amount < 0) {
+            throw new IllegalArgumentException("Invalid transaction details");
+        }
         this.date = date;
         this.type = type;
         this.category = category;
@@ -54,6 +57,9 @@ public class Transaction
     }
 
     public void setAmount(float amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Amount cannot be negative");
+        }
         this.amount = amount;
     }
 
