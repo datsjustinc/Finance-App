@@ -3,7 +3,7 @@
 import java.util.Arrays;
 import java.util.List;
 import java.io.IOException;
-
+import java.util.Scanner;
 
 public class Main
 {
@@ -11,13 +11,50 @@ public class Main
     public static void main(String[] args)
     {
 
-        // Create user profile
+        // Sample user input for the profile
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter your name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Enter your preferred currency: ");
+        String currency = scanner.nextLine();
+
+        System.out.print("Enter your monthly income: ");
+        float monthlyIncome = 0;
+        while (true) {
+            try {
+                monthlyIncome = Float.parseFloat(scanner.nextLine());
+                if (monthlyIncome < 0) {
+                    System.out.print("Income cannot be negative. Please enter again: ");
+                } else {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.print("Invalid number. Please enter your income again: ");
+            }
+        }
+
+        // Uncomment the following lines to allow user to input preferred categories
+        // System.out.print("Enter your preferred categories (comma-separated): ");
+        // String categoriesInput = scanner.nextLine();
+        // List<String> preferredCategories = Arrays.asList(categoriesInput.split(",\\s*"));
+        // scanner.close();
+
         UserProfile user = new UserProfile(
-            "Justin",
-            "USD",
-            3000f,
-            Arrays.asList("Food", "Rent", "Transportation", "Entertainment")
+            name, 
+            currency, 
+            monthlyIncome, 
+            Arrays.asList("Food", "Rent", "Transportation", "Entertainment") // utilize default categories for the time being
         );
+
+        // Create user profile
+        // UserProfile user = new UserProfile(
+        //     "Justin",
+        //     "USD",
+        //     3000f,
+        //     Arrays.asList("Food", "Rent", "Transportation", "Entertainment")
+        // );
 
         // Print user profile details using getters
         System.out.println("=== User Profile ===");

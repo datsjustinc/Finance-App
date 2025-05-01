@@ -18,7 +18,7 @@ public class UserProfile
         this.monthlyIncome = monthlyIncome;
         this.preferredCategories = preferredCategories;
     }
-    
+
     // Getters
     public String getName() {
         return name;
