@@ -15,7 +15,7 @@ public class Main
 
     // Stores transaction objects
     private static List<Transaction> transactions = new ArrayList<>();
-
+    
     // Stores budget object (with hashmap for categories)
     private static Budget budget = new Budget();
 
@@ -41,7 +41,7 @@ public class Main
                 case "1" -> addTransaction();
                 case "2" -> addBudgetLimits();
                 case "3" -> addSavingsGoal();
-                case "4" -> exportMonthlySummary();
+                case "4" -> generateMonthlySummary();
                 case "5" -> exportReport();
                 case "6" -> saveData();
                 case "0" -> System.out.println("Goodbye!");
@@ -58,8 +58,8 @@ public class Main
     // Function dsplays menu options and prompts user to selection an option 
     private static void printMenu()
     {
-        System.out.println
-        ("""\nMenu:
+        System.out.println("""
+        \nMenu:
         1. Add Transaction
         2. Set Budget Limits
         3. Add Savings Goal
@@ -80,12 +80,9 @@ public class Main
         {
             try
             {
-                // try to loadDdata from DataPersistenceManager for each json file
+                // try to loadDdata from DataPersistenceManager for user json profile
                 // if it doesn't exist it will throw catch error
                 user = DataPersistenceManager.loadData("user_profile.json", UserProfile.class);
-                transactions = DataPersistenceManager.loadListData("transactions.json", new TypeToken<List<Transaction>>() {});
-                budget.categoryLimits = DataPersistenceManager.loadData("budget.json", Map.class);
-                savingsGoals = DataPersistenceManager.loadListData("savings_goals.json", new TypeToken<List<SavingsGoal>>() {});
                 System.out.println("Data loaded successfully.");
 
             }

@@ -48,7 +48,7 @@ public class ReportGenerator
     }
 
     // Exports all data to a CSV file
-    public boolean exportREport(String filename)
+    public boolean exportReport(String filename)
     {
         try (FileWriter out = new FileWriter(filename))
         {
