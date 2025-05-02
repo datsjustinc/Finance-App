@@ -136,10 +136,54 @@ public class Main
 
     //michelle
     /* Function to add to transactions on user profile */
-    private static void addTransaction()
-    {
-        // check uml might need multiple functions for this like edit function, add funcntion, remove function
+    private static List<Transaction> transactions = new ArrayList<>();
+
+    private static void addTransaction(String date, String type, List<String> categories, float amount, String description) {
+    if (amount < 0) {
+        System.out.println("Amount must be non-negative.");
+        return;
     }
+
+    for (String category : categories) {
+        try {
+            Transaction newTransaction = new Transaction(date, type, category, amount, description);
+            transactions.add(newTransaction);
+            System.out.println("Added transaction: " + category + " | $" + amount + " | " + description);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Failed to add transaction: " + e.getMessage());
+        }
+    }
+}
+
+    private static void editTransaction(int index, String newDate, String newType, String newCategory, float newAmount, String newDescription) {
+    if (index < 0 || index >= transactions.size()) {
+        System.out.println("Invalid transaction index.");
+        return;
+    }
+
+    try {
+        Transaction t = transactions.get(index);
+        t.setDate(newDate);
+        t.setType(newType);
+        t.setCategory(newCategory);
+        t.setAmount(newAmount);
+        t.setNotes(newDescription);
+        System.out.println("Transaction updated.");
+    } catch (IllegalArgumentException e) {
+        System.out.println("Failed to edit transaction: " + e.getMessage());
+    }
+}
+
+    private static void removeTransaction(int index) {
+    if (index < 0 || index >= transactions.size()) {
+        System.out.println("Invalid transaction index.");
+        return;
+    }
+
+    Transaction removed = transactions.remove(index);
+    System.out.println("Removed transaction: " + removed.getCategory() + " | $" + removed.getAmount());
+}
+
 
     //michelle
     /* Function to add budget limits to user profile */
