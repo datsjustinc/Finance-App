@@ -2,8 +2,10 @@ import java.util.*;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
+import com.google.gson.reflect.TypeToken;
 
-public class Main{
+public class Main
+{
 
     // Sample user input for the profile
     private static Scanner scanner = new Scanner(System.in);
@@ -20,29 +22,56 @@ public class Main{
     // Stores savings goal objects
     private static List<SavingsGoal> savingsGoals = new ArrayList<>();
 
-    // justin
+    // Justin
     public static void main(String[] args)
     {
+        System.out.println("=== Personal Finance Tracker ===");
 
         loadOrCreateProfile();
 
+        String choice;
+        do 
+        {
+            printMenu();
+            System.out.print("Select an option: ");
+            choice = scanner.nextLine().trim();
+
+            switch (choice) 
+            {
+                case "1" -> addTransaction();
+                case "2" -> addBudgetLimits();
+                case "3" -> addSavingsGoal();
+                case "4" -> exportMonthlySummary();
+                case "5" -> exportReport();
+                case "6" -> saveData();
+                case "0" -> System.out.println("Goodbye!");
+                default -> System.out.println("Invalid option. Try again.");
+            }
+        } 
+        
+        while (!choice.equals("0"));
+
+        scanner.close();
     }
 
-    // justin
-    /* Function dsplays menu options and prompts user to selection an option 
-    */
-   private static void printMenu()
-   {
-        System.out.print("""
-        \n
+    // Justin
+    // Function dsplays menu options and prompts user to selection an option 
+    private static void printMenu()
+    {
+        System.out.println
+        ("""\nMenu:
+        1. Add Transaction
+        2. Set Budget Limits
+        3. Add Savings Goal
+        4. View Monthly Summary
+        5. Export Report to CSV
+        6. Save All Data
+        0. Exit
         """);
-   }
+    }
 
-    // justin
-    /* Function to check for existing profile or create new one; prompts 
-    for user inputs and creates user class with arguments.
-    */
-   //check if json exists, if not create new profile
+    // Justin
+    // Function to check for existing profile or create new one
     private static void loadOrCreateProfile()
     {
         System.out.print("Load existing profile? (yes/no): ");
@@ -54,12 +83,16 @@ public class Main{
                 // try to loadDdata from DataPersistenceManager for each json file
                 // if it doesn't exist it will throw catch error
                 user = DataPersistenceManager.loadData("user_profile.json", UserProfile.class);
+                transactions = DataPersistenceManager.loadListData("transactions.json", new TypeToken<List<Transaction>>() {});
+                budget.categoryLimits = DataPersistenceManager.loadData("budget.json", Map.class);
+                savingsGoals = DataPersistenceManager.loadListData("savings_goals.json", new TypeToken<List<SavingsGoal>>() {});
+                System.out.println("Data loaded successfully.");
 
             }
             catch (IOException e)
             {
                 // handle exception
-                System.err.println("Error loading profile: " + e.getMessage());
+                System.err.println("Failed to load data. Creating new profile: " + e.getMessage());
                 createNewProfile();
             }
         }
@@ -72,8 +105,7 @@ public class Main{
         
     }
 
-    /* Function creates user profile and prompts for all the user class fields
-    */
+    // Function creates user profile and prompts for all the user class fields
     private static void createNewProfile()
     {        
         // Prompt user for profile details
@@ -98,7 +130,9 @@ public class Main{
         {
             DataPersistenceManager.saveData("user_profile.json", user);
             System.out.println("Profile created successfully.");
-        } catch (IOException e) {
+        } 
+        catch (IOException e) 
+        {
             System.err.println("Error saving profile: " + e.getMessage());
         }
     }   
@@ -125,18 +159,53 @@ public class Main{
           // check uml might need multiple functions for this  
     }
 
-    //justin
-    /* Function to generate monthly summary from user profile */
-    private static void exportMonthlySummary()
+    // Justin
+    // Function prompts the user for a month and year, then generates a financial summary for that period
+    private static void generateMonthlySummary()
     {
-        // check uml might need multiple functions for this 
+        // Prompt user to enter month and year in "MM YYYY" format
+        System.out.print("Enter month and year (MM YYYY): ");
+
+        // Read input and split by whitespace into [month, year]
+        String[] input = scanner.nextLine().split("\\s+");
+
+        // Validate input format: must have exactly 2 parts
+        if (input.length != 2) 
+        {
+            System.out.println("Invalid format. Use MM YYYY.");
+            return; // Exit the method early if format is invalid
+        }
+
+        // Extract month and year from user input
+        String month = input[0];
+        String year = input[1];
+
+        // Create a ReportGenerator with the current data in memory
+        ReportGenerator report = new ReportGenerator(transactions, budget, savingsGoals);
+
+        // Generate and display the monthly summary for the given period
+        report.generateMonthlySummary(month, year);
     }
 
-    //justin
-    /* Function to generate monthly report from user profile */
+    // Justin
+    // Function to generate and export a full financial report to a CSV file
     private static void exportReport()
     {
-        // check uml might need multiple functions for this 
+        // Create a ReportGenerator using current in-memory data
+        ReportGenerator report = new ReportGenerator(transactions, budget, savingsGoals);
+
+        // Attempt to export the report to a CSV file named "report.csv"
+        boolean success = report.exportReport("report.csv");
+
+        // Notify the user of success or failure
+        if (success) 
+        {
+            System.out.println("Report exported to report.csv");
+        } 
+        else 
+        {
+            System.out.println("Failed to export report.");
+        }
     }
 
     //michelle 
