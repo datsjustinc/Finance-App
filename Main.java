@@ -187,18 +187,53 @@ public class Main
 
     //michelle
     /* Function to add budget limits to user profile */
-    private static void addBudgetLimits()
-    {
-        // check uml might need multiple functions for this 
+    private static void addBudgetLimits() {
+        System.out.println("Enter category for budget limit: ");
+        String category = scanner.nextLine();
+
+        System.out.println("Enter monthly limit for " + category + ": ");
+        float limit;
+        try {
+            limit = Float.parseFloat(scanner.nextLine());
+            if (limit < 0) {
+                System.out.println("Limit must be non-negative.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a number.");
+            return;
+        }
+
+        budget.setLimit(category, limit);
+        System.out.println("Budget limit set for " + category + ": $" + limit);
     }
+
 
     //michelle
     /* Function to add saving goals to user profile */
-    private static void addSavingsGoal()
+    private static void addSavingsGoal() 
     {
-        //savegoals, editgoals, delete goals
-          // check uml might need multiple functions for this  
-    }
+        System.out.print("Enter savings goal name: ");
+        String goalName = scanner.nextLine();
+
+        System.out.print("Enter target amount: ");
+        float target;
+        try {
+            target = Float.parseFloat(scanner.nextLine());
+            if (target <= 0) {
+                System.out.println("Target amount must be greater than zero.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid number format.");
+            return;
+        }
+
+        SavingsGoal goal = new SavingsGoal(goalName, target);
+        savingsGoals.add(goal);
+        System.out.println("Savings goal added: " + goalName + " | Target: $" + target);
+        }
+
 
     // Justin
     // Function prompts the user for a month and year, then generates a financial summary for that period
@@ -251,8 +286,15 @@ public class Main
 
     //michelle 
     /* Function to save data to json files */
-    private static void saveData()
-    {
-        // check uml might need multiple functions for this 
+    private static void saveData() {
+        try {
+            DataPersistenceManager.saveData("user_profile.json", user);
+            DataPersistenceManager.saveData("transactions.json", transactions);
+            DataPersistenceManager.saveData("budget.json", budget);
+            DataPersistenceManager.saveData("savings_goals.json", savingsGoals);
+            System.out.println("All data saved successfully.");
+        } catch (IOException e) {
+            System.err.println("Failed to save data: " + e.getMessage());
+        }
     }
 }
