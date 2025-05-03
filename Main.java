@@ -27,7 +27,7 @@ public class Main
     {
         System.out.println("=== Personal Finance Tracker ===");
 
-        loadOrCreateProfile();
+        loadProfile();
 
         String choice;
         do 
@@ -72,7 +72,7 @@ public class Main
 
     // Justin
     // Function to check for existing profile or create new one
-    private static void loadOrCreateProfile()
+    private static void loadProfile()
     {
         System.out.print("Load existing profile? (yes/no): ");
 
@@ -90,20 +90,19 @@ public class Main
             {
                 // handle exception
                 System.err.println("Failed to load data. Creating new profile: " + e.getMessage());
-                createNewProfile();
+                createProfile();
             }
         }
-
         else
         {
             // create a new profile
-            createNewProfile();
+            createProfile();
         }
-        
     }
 
+    // Justin * NEED TO ADD EDIT PROFILE FEATURE
     // Function creates user profile and prompts for all the user class fields
-    private static void createNewProfile()
+    private static void createProfile()
     {        
         // Prompt user for profile details
         System.out.print("Enter your name: ");
@@ -134,28 +133,8 @@ public class Main
         }
     }   
 
-    //michelle
-    /* Function to add to transactions on user profile */
-    // private static List<Transaction> transactions = new ArrayList<>();
-
-//     private static void addTransaction(String date, String type, List<String> categories, float amount, String description) {
-//     if (amount < 0) {
-//         System.out.println("Amount must be non-negative.");
-//         return;
-//     }
-
-//     for (String category : categories) {
-//         try {
-//             Transaction newTransaction = new Transaction(date, type, category, amount, description);
-//             transactions.add(newTransaction);
-//             System.out.println("Added transaction: " + category + " | $" + amount + " | " + description);
-//         } catch (IllegalArgumentException e) {
-//             System.out.println("Failed to add transaction: " + e.getMessage());
-//         }
-//     }
-// }
-
-    private static void addTransaction() {
+    private static void addTransaction() 
+    {
         System.out.print("Enter date (YYYY-MM-DD): ");
         String date = scanner.nextLine();
 
@@ -168,34 +147,70 @@ public class Main
         System.out.print("Enter amount: ");
         float amount = Float.parseFloat(scanner.nextLine());
 
+
+        System.out.print("Enter amount: ");
+        // float amount;
+        try 
+        {
+            amount = Float.parseFloat(scanner.nextLine());
+            if (amount < 0) 
+            {
+                System.out.println("Amount must be non-negative.");
+                return;
+            }
+        } 
+        catch (NumberFormatException e) 
+        {
+            System.out.println("Invalid number format.");
+            return;
+        }
+
         System.out.print("Enter description/notes: ");
         String description = scanner.nextLine();
 
-        addTransaction(date, type, categories, amount, description);
+        for (String category : categories) 
+        {
+            try 
+            {
+                Transaction newTransaction = new Transaction(date, type, category, amount, description);
+                transactions.add(newTransaction);
+                System.out.println("Added transaction: " + category + " | $" + amount + " | " + description);
+            } 
+            catch (IllegalArgumentException e) 
+            {
+                System.out.println("Failed to add transaction: " + e.getMessage());
+            }
+        }
     }
 
+    private static void editTransaction(int index, String newDate, String newType, String newCategory, float newAmount, String newDescription) 
+    {
+        if (index < 0 || index >= transactions.size()) 
+        {
+            System.out.println("Invalid transaction index.");
+            return;
+        }
 
-    private static void editTransaction(int index, String newDate, String newType, String newCategory, float newAmount, String newDescription) {
-    if (index < 0 || index >= transactions.size()) {
-        System.out.println("Invalid transaction index.");
-        return;
+        try 
+        {
+            Transaction t = transactions.get(index);
+            t.setDate(newDate);
+            t.setType(newType);
+            t.setCategory(newCategory);
+            t.setAmount(newAmount);
+            t.setNotes(newDescription);
+            System.out.println("Transaction updated.");
+        } 
+        catch (IllegalArgumentException e) 
+        {
+            System.out.println("Failed to edit transaction: " + e.getMessage());
+        }
     }
-
-    try {
-        Transaction t = transactions.get(index);
-        t.setDate(newDate);
-        t.setType(newType);
-        t.setCategory(newCategory);
-        t.setAmount(newAmount);
-        t.setNotes(newDescription);
-        System.out.println("Transaction updated.");
-    } catch (IllegalArgumentException e) {
-        System.out.println("Failed to edit transaction: " + e.getMessage());
-    }
-    }
-
-        private static void removeTransaction(int index) {
-        if (index < 0 || index >= transactions.size()) {
+ 
+    private static void deleteTransaction(int index) 
+    {
+        if (index < 0 || index >= transactions.size()) 
+        {
             System.out.println("Invalid transaction index.");
             return;
         }
@@ -207,19 +222,24 @@ public class Main
 
     //michelle
     /* Function to add budget limits to user profile */
-    private static void addBudgetLimits() {
+    private static void addBudgetLimits() 
+    //split into getBudgetLimits and setBudgetLimits
+    {
         System.out.println("Enter category for budget limit: ");
         String category = scanner.nextLine();
 
         System.out.println("Enter monthly limit for " + category + ": ");
         float limit;
-        try {
+        try 
+        {
             limit = Float.parseFloat(scanner.nextLine());
             if (limit < 0) {
                 System.out.println("Limit must be non-negative.");
                 return;
             }
-        } catch (NumberFormatException e) {
+        } 
+        catch (NumberFormatException e) 
+        {
             System.out.println("Invalid input. Please enter a number.");
             return;
         }
@@ -229,7 +249,7 @@ public class Main
     }
 
 
-    //michelle
+    //michelle split into CREATE, UPDATE, and DELETE GOALS
     /* Function to add saving goals to user profile */
     private static void addSavingsGoal() 
     {
@@ -252,7 +272,7 @@ public class Main
         SavingsGoal goal = new SavingsGoal(goalName, target, 0.0f, "in progress");
         savingsGoals.add(goal);
         System.out.println("Savings goal added: " + goalName + " | Target: $" + target);
-        }
+    }
 
 
     // Justin
@@ -304,9 +324,10 @@ public class Main
         }
     }
 
-    //michelle 
+    //Justin save/load profile save/load transaction save/load budget save/load goals
     /* Function to save data to json files */
-    private static void saveData() {
+    private static void saveData() 
+    {
         try {
             DataPersistenceManager.saveData("user_profile.json", user);
             DataPersistenceManager.saveData("transactions.json", transactions);
