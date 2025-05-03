@@ -133,3 +133,16 @@
 //     }
 
 // }
+
+// private static void viewAllTransactions() {
+//     if (transactions.isEmpty()) {
+//         System.out.println("No transactions available.");
+//         return;
+//     }
+
+//     for (int i = 0; i < transactions.size(); i++) {
+//         Transaction t = transactions.get(i);
+//         System.out.printf("[%d] %s | %s | %s | $%.2f | %s%n",
+//                 i, t.getDate(), t.getType(), t.getCategory(), t.getAmount(), t.getNotes());
+//     }
+// }

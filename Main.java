@@ -136,24 +136,44 @@ public class Main
 
     //michelle
     /* Function to add to transactions on user profile */
-    private static List<Transaction> transactions = new ArrayList<>();
+    // private static List<Transaction> transactions = new ArrayList<>();
 
-    private static void addTransaction(String date, String type, List<String> categories, float amount, String description) {
-    if (amount < 0) {
-        System.out.println("Amount must be non-negative.");
-        return;
+//     private static void addTransaction(String date, String type, List<String> categories, float amount, String description) {
+//     if (amount < 0) {
+//         System.out.println("Amount must be non-negative.");
+//         return;
+//     }
+
+//     for (String category : categories) {
+//         try {
+//             Transaction newTransaction = new Transaction(date, type, category, amount, description);
+//             transactions.add(newTransaction);
+//             System.out.println("Added transaction: " + category + " | $" + amount + " | " + description);
+//         } catch (IllegalArgumentException e) {
+//             System.out.println("Failed to add transaction: " + e.getMessage());
+//         }
+//     }
+// }
+
+    private static void addTransaction() {
+        System.out.print("Enter date (YYYY-MM-DD): ");
+        String date = scanner.nextLine();
+
+        System.out.print("Enter type (income or expense): ");
+        String type = scanner.nextLine();
+
+        System.out.print("Enter category (can enter multiple, comma-separated): ");
+        List<String> categories = Arrays.asList(scanner.nextLine().split("\\s*,\\s*"));
+
+        System.out.print("Enter amount: ");
+        float amount = Float.parseFloat(scanner.nextLine());
+
+        System.out.print("Enter description/notes: ");
+        String description = scanner.nextLine();
+
+        addTransaction(date, type, categories, amount, description);
     }
 
-    for (String category : categories) {
-        try {
-            Transaction newTransaction = new Transaction(date, type, category, amount, description);
-            transactions.add(newTransaction);
-            System.out.println("Added transaction: " + category + " | $" + amount + " | " + description);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Failed to add transaction: " + e.getMessage());
-        }
-    }
-}
 
     private static void editTransaction(int index, String newDate, String newType, String newCategory, float newAmount, String newDescription) {
     if (index < 0 || index >= transactions.size()) {
@@ -172,17 +192,17 @@ public class Main
     } catch (IllegalArgumentException e) {
         System.out.println("Failed to edit transaction: " + e.getMessage());
     }
-}
-
-    private static void removeTransaction(int index) {
-    if (index < 0 || index >= transactions.size()) {
-        System.out.println("Invalid transaction index.");
-        return;
     }
 
-    Transaction removed = transactions.remove(index);
-    System.out.println("Removed transaction: " + removed.getCategory() + " | $" + removed.getAmount());
-}
+        private static void removeTransaction(int index) {
+        if (index < 0 || index >= transactions.size()) {
+            System.out.println("Invalid transaction index.");
+            return;
+        }
+
+        Transaction removed = transactions.remove(index);
+        System.out.println("Removed transaction: " + removed.getCategory() + " | $" + removed.getAmount());
+    }
 
 
     //michelle
@@ -229,7 +249,7 @@ public class Main
             return;
         }
 
-        SavingsGoal goal = new SavingsGoal(goalName, target);
+        SavingsGoal goal = new SavingsGoal(goalName, target, 0.0f, "in progress");
         savingsGoals.add(goal);
         System.out.println("Savings goal added: " + goalName + " | Target: $" + target);
         }
