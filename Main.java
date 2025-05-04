@@ -38,7 +38,7 @@ public class Main
 
             switch (choice) 
             {
-                case "1" -> addTransaction();
+                case "1" -> manageTransactions();
                 case "2" -> addBudgetLimits();
                 case "3" -> manageSavingsGoals();
                 case "4" -> generateMonthlySummary();
@@ -60,9 +60,9 @@ public class Main
     {
         System.out.println("""
         \nMenu:
-        1. Add Transaction
+        1. Manage Transactions (Add, Edit, Delete)
         2. Set Budget Limits
-        3. Create, Update, or Delete a Savings Goal
+        3. Manage Savings Goals (Create, Update, or Delete)
         4. View Monthly Summary
         5. Export Report to CSV
         6. Save All Data
@@ -132,6 +132,32 @@ public class Main
             System.err.println("Error saving profile: " + e.getMessage());
         }
     }   
+
+    private static void manageTransactions() {
+        while (true) {
+            System.out.println("""
+                \nTransaction Options:
+                1. Add a transaction
+                2. Edit a transaction
+                3. Delete a transaction
+                0. Back to main menu
+            """);
+
+            System.out.print("Select an option: ");
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1" -> addTransaction();
+                case "2" -> editTransaction();
+                case "3" -> deleteTransaction();
+                case "0" -> {
+                    System.out.println("Returning to main menu...");
+                    return;
+                }
+                default -> System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
 
     private static void addTransaction() 
     {
