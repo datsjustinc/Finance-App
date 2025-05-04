@@ -40,7 +40,7 @@ public class Main
             {
                 case "1" -> addTransaction();
                 case "2" -> addBudgetLimits();
-                case "3" -> addSavingsGoal();
+                case "3" -> manageSavingsGoals();
                 case "4" -> generateMonthlySummary();
                 case "5" -> exportReport();
                 case "6" -> saveData();
@@ -62,7 +62,7 @@ public class Main
         \nMenu:
         1. Add Transaction
         2. Set Budget Limits
-        3. Add Savings Goal
+        3. Create, Update, or Delete a Savings Goal
         4. View Monthly Summary
         5. Export Report to CSV
         6. Save All Data
@@ -223,6 +223,7 @@ public class Main
     //michelle
     /* Function to add budget limits to user profile */
 // Prompts user to input a budget limit and returns it as a (category, limit) pair
+
     private static Map.Entry<String, Float> getBudgetLimit() {
         System.out.println("Enter category for budget limit: ");
         String category = scanner.nextLine();
@@ -256,7 +257,35 @@ public class Main
     }
 
 
+
     //michelle split into CREATE, UPDATE, and DELETE GOALS
+
+    private static void manageSavingsGoals() {
+        while (true) {
+            System.out.println("""
+                \nSavings Goal Options:
+                1. Create a new goal
+                2. Update an existing goal
+                3. Delete a goal
+                0. Back to main menu
+            """);
+
+            System.out.print("Select an option: ");
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1" -> createSavingsGoal();
+                case "2" -> updateSavingsGoal();
+                case "3" -> deleteSavingsGoal();
+                case "0" -> {
+                    System.out.println("Returning to main menu...");
+                    return;
+                }
+                default -> System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
+
     /* Function to add saving goals to user profile */
     private static void createSavingsGoal() 
     {
@@ -277,10 +306,93 @@ public class Main
         }
 
         SavingsGoal goal = new SavingsGoal(goalName, target, 0.0f, "in progress");
+
         savingsGoals.add(goal);
         System.out.println("Savings goal added: " + goalName + " | Target: $" + target);
     }
 
+    private static void updateSavingsGoal() {
+        if (savingsGoals.isEmpty()) {
+            System.out.println("No savings goals to update.");
+            return;
+        }
+
+        // Show existing goals
+        for (int i = 0; i < savingsGoals.size(); i++) {
+            System.out.println(i + ": " + savingsGoals.get(i).getName() + " | Target: $" + savingsGoals.get(i).getTargetAmount());
+        }
+
+        System.out.print("Enter the index of the goal to update: ");
+        int index;
+        try {
+            index = Integer.parseInt(scanner.nextLine());
+            if (index < 0 || index >= savingsGoals.size()) {
+                System.out.println("Invalid index.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a valid index.");
+            return;
+        }
+
+        SavingsGoal goal = savingsGoals.get(index);
+
+        System.out.print("Enter new target amount (leave blank to keep current): ");
+        String targetInput = scanner.nextLine();
+        if (!targetInput.isBlank()) {
+            try {
+                float newTarget = Float.parseFloat(targetInput);
+                if (newTarget > 0) {
+                    goal.setTargetAmount(newTarget);
+                } else {
+                    System.out.println("Target must be positive. Skipping update.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid number format. Skipping target update.");
+            }
+        }
+
+        System.out.print("Enter new progress amount (leave blank to keep current): ");
+        String progressInput = scanner.nextLine();
+        if (!progressInput.isBlank()) {
+            try {
+                float newProgress = Float.parseFloat(progressInput);
+                if (newProgress >= 0) {
+                    goal.setCurrentAmount(newProgress);
+                } else {
+                    System.out.println("Progress must be non-negative. Skipping update.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid number format. Skipping progress update.");
+            }
+        }
+
+        System.out.println("Savings goal updated.");
+    }
+
+    private static void deleteSavingsGoal() {
+        if (savingsGoals.isEmpty()) {
+            System.out.println("No savings goals to delete.");
+            return;
+        }
+
+        for (int i = 0; i < savingsGoals.size(); i++) {
+            System.out.println(i + ": " + savingsGoals.get(i).getName() + " | Target: $" + savingsGoals.get(i).getTargetAmount());
+        }
+
+        System.out.print("Enter the index of the goal to delete: ");
+        try {
+            int index = Integer.parseInt(scanner.nextLine());
+            if (index >= 0 && index < savingsGoals.size()) {
+                SavingsGoal removed = savingsGoals.remove(index);
+                System.out.println("Deleted goal: " + removed.getName());
+            } else {
+                System.out.println("Invalid index.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a valid number.");
+        }
+    }
 
     // Justin
     // Function prompts the user for a month and year, then generates a financial summary for that period

@@ -17,4 +17,20 @@ public class SavingsGoal
         this.deadline = deadline;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public float getTargetAmount() {
+        return targetAmount;
+    }
+
+    public void setTargetAmount(float targetAmount) {
+        this.targetAmount = targetAmount;
+    }
+
+    public void setCurrentAmount(float currentAmount) {
+        this.currentAmount = currentAmount;
+    }
+
 }
