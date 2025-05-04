@@ -247,18 +247,31 @@ public class Main
     }
 
  
-    private static void deleteTransaction(int index) 
-    {
-        if (index < 0 || index >= transactions.size()) 
-        {
-            System.out.println("Invalid transaction index.");
+    private static void deleteTransaction() {
+        if (transactions.isEmpty()) {
+            System.out.println("No transactions to delete.");
             return;
         }
 
-        Transaction removed = transactions.remove(index);
-        System.out.println("Removed transaction: " + removed.getCategory() + " | $" + removed.getAmount());
-    }
+        for (int i = 0; i < transactions.size(); i++) {
+            Transaction t = transactions.get(i);
+            System.out.println(i + ": " + t.getDate() + " | " + t.getType() + " | " +
+                            t.getCategory() + " | $" + t.getAmount() + " | " + t.getNotes());
+        }
 
+        System.out.print("Enter the index of the transaction to delete: ");
+        try {
+            int index = Integer.parseInt(scanner.nextLine());
+            if (index >= 0 && index < transactions.size()) {
+                Transaction removed = transactions.remove(index);
+                System.out.println("Removed transaction: " + removed.getCategory() + " | $" + removed.getAmount());
+            } else {
+                System.out.println("Invalid index.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a valid number.");
+        }
+    }
 
     //michelle
     /* Function to add budget limits to user profile */
