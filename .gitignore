@@ -4,6 +4,9 @@
 # Ignore Json data files
 *.json
 
+# Ignore Test file
+*Test.java
+
 # Ignore CSV/Excel export files
 *.csv
 *.xlsx

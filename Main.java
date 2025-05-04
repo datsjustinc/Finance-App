@@ -274,8 +274,6 @@ public class Main
         System.out.print("Enter amount: ");
         float amount = Float.parseFloat(scanner.nextLine());
 
-
-        System.out.print("Enter amount: ");
         // float amount;
         try 
         {
@@ -692,7 +690,7 @@ public class Main
         }
     }
 
-    // Function prompts the user for a month and year, then generates a financial summary for that period
+    // Function prompts the user for a month and year, then generates a financial summary for that period to terminal
     private static void generateMonthlySummary()
     {
         // Prompt user to enter month and year in "MM YYYY" format
@@ -726,12 +724,12 @@ public class Main
         ReportGenerator report = new ReportGenerator(transactions, budget, savingsGoals);
 
         // Attempt to export the report to a CSV file named "report.csv"
-        boolean success = report.exportReport("report.csv");
+        String filename = report.exportReport("report.csv");
 
         // Notify the user of success or failure
-        if (success) 
+        if (filename != null) 
         {
-            System.out.println("Report exported to report.csv");
+            System.out.println("Report exported to: " + filename);
         } 
         else 
         {

@@ -1,9 +1,10 @@
 // Generates reports and exports data to CSV format
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ReportGenerator
 {
@@ -48,8 +49,11 @@ public class ReportGenerator
     }
 
     // Exports all data to a CSV file
-    public boolean exportReport(String filename)
+    public String exportReport(String basename)
     {
+        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String filename = basename.replace(".csv", "") + "_" + timestamp + ".csv";
+
         try (FileWriter out = new FileWriter(filename))
         {
             out.write("Date,Type,Category,Amount,Notes\n");
@@ -73,12 +77,11 @@ public class ReportGenerator
                 out.write(goal.goalName + "," + goal.targetAmount + "," + goal.savedAmount + "," + goal.deadline + "\n");
             }
 
-            return true;
+            return filename; // if actual filename on success
         }
         catch (IOException e)
         {
-            return false;
+            return null; // if filename failed
         }
     }
-
 }
