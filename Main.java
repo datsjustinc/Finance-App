@@ -44,6 +44,8 @@ public class Main
                 case "4" -> generateMonthlySummary();
                 case "5" -> exportReport();
                 case "6" -> saveData();
+                case "7" -> manageProfile();
+                case "8" -> viewProfile();
                 case "0" -> System.out.println("Goodbye!");
                 default -> System.out.println("Invalid option. Try again.");
             }
@@ -66,6 +68,8 @@ public class Main
         4. View Monthly Summary
         5. Export Report to CSV
         6. Save All Data
+        7. Manage Profile (Name, Currency, Monthly Income, Preferred Categories)
+        8. View Profile
         0. Exit
         """);
     }
@@ -131,9 +135,120 @@ public class Main
         {
             System.err.println("Error saving profile: " + e.getMessage());
         }
-    }   
+    }
 
-    private static void manageTransactions() {
+    private static void manageProfile() 
+    {
+        while (true) 
+        {
+            System.out.println("""
+                \nProfile Management Menu:
+                1. Edit name
+                2. Change currency
+                3. Update monthly income
+                4. Modify preferred categories
+                0. Back to main menu
+            """);
+
+            System.out.print("Select an option: ");
+            String choice = scanner.nextLine().trim();
+
+            switch (choice) 
+            {
+                case "1" -> editName();
+                case "2" -> changeCurrency();
+                case "3" -> updateMonthlyIncome();
+                case "4" -> modifyPreferredCategories();
+                case "0" -> 
+                {
+                    saveData(); // persist changes
+                    System.out.println("Returning to main menu...");
+                    return;
+                }
+
+                default -> System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
+
+    private static void editName() 
+    {
+        System.out.print("Enter new name: ");
+        String newName = scanner.nextLine().trim();
+
+        if (!newName.isEmpty()) 
+        {
+            user.name = newName;
+            System.out.println("Name updated.");
+        } 
+        else 
+        {
+            System.out.println("Name not changed.");
+        }
+    }
+
+    private static void changeCurrency() 
+    {
+        System.out.print("Enter new currency (e.g., USD): ");
+        String newCurrency = scanner.nextLine().trim();
+
+        if (!newCurrency.isEmpty()) 
+        {
+            user.currency = newCurrency;
+            System.out.println("Currency updated.");
+        } 
+        else 
+        {
+            System.out.println("Currency not changed.");
+        }
+    }
+
+    private static void updateMonthlyIncome() 
+    {
+        System.out.print("Enter new monthly income: ");
+        String input = scanner.nextLine().trim();
+
+        try 
+        {
+            if (!input.isEmpty()) 
+            {
+                user.monthlyIncome = Float.parseFloat(input);
+                System.out.println("Monthly income updated.");
+            }
+        } 
+        catch (NumberFormatException e) 
+        {
+            System.out.println("Invalid income amount. Income not updated.");
+        }
+    }
+
+    private static void modifyPreferredCategories() 
+    {
+        System.out.print("Enter new preferred categories (comma-separated): ");
+        String input = scanner.nextLine().trim();
+
+        if (!input.isEmpty()) 
+        {
+            user.preferredCategories = Arrays.asList(input.split("\\s*,\\s*"));
+            System.out.println("Preferred categories updated.");
+        } 
+        else 
+        {
+            System.out.println("Categories not changed.");
+        }
+    }
+
+    private static void viewProfile() 
+    {
+        System.out.println("\nCurrent Profile:");
+        System.out.println("Name: " + user.name);
+        System.out.println("Currency: " + user.currency);
+        System.out.println("Monthly Income: " + user.monthlyIncome);
+        System.out.println("Preferred Categories: " + String.join(", ", user.preferredCategories));
+    }
+
+    private static void manageTransactions() 
+    {
         while (true) {
             System.out.println("""
                 \nTransaction Options:
