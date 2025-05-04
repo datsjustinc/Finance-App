@@ -18,7 +18,7 @@ public class SavingsGoal
     }
 
     public String getName() {
-        return name;
+        return goalName;
     }
 
     public float getTargetAmount() {
@@ -30,7 +30,7 @@ public class SavingsGoal
     }
 
     public void setCurrentAmount(float currentAmount) {
-        this.currentAmount = currentAmount;
+        this.savedAmount = currentAmount;
     }
 
 }
