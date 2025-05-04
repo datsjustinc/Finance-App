@@ -222,36 +222,43 @@ public class Main
 
     //michelle
     /* Function to add budget limits to user profile */
-    private static void addBudgetLimits() 
-    //split into getBudgetLimits and setBudgetLimits
-    {
+// Prompts user to input a budget limit and returns it as a (category, limit) pair
+    private static Map.Entry<String, Float> getBudgetLimit() {
         System.out.println("Enter category for budget limit: ");
         String category = scanner.nextLine();
 
         System.out.println("Enter monthly limit for " + category + ": ");
-        float limit;
-        try 
-        {
-            limit = Float.parseFloat(scanner.nextLine());
+        try {
+            float limit = Float.parseFloat(scanner.nextLine());
             if (limit < 0) {
                 System.out.println("Limit must be non-negative.");
-                return;
+                return null;
             }
-        } 
-        catch (NumberFormatException e) 
-        {
-            System.out.println("Invalid input. Please enter a number.");
-            return;
+            return new AbstractMap.SimpleEntry<>(category, limit);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a valid number.");
+            return null;
         }
+    }
 
+    // Applies the limit to the budget map and prints confirmation
+    private static void setBudgetLimit(String category, float limit) {
         budget.setLimit(category, limit);
         System.out.println("Budget limit set for " + category + ": $" + limit);
+    }
+
+    // Wrapper function that combines both
+    private static void addBudgetLimits() {
+        Map.Entry<String, Float> entry = getBudgetLimit();
+        if (entry != null) {
+            setBudgetLimit(entry.getKey(), entry.getValue());
+        }
     }
 
 
     //michelle split into CREATE, UPDATE, and DELETE GOALS
     /* Function to add saving goals to user profile */
-    private static void addSavingsGoal() 
+    private static void createSavingsGoal() 
     {
         System.out.print("Enter savings goal name: ");
         String goalName = scanner.nextLine();
