@@ -183,29 +183,69 @@ public class Main
         }
     }
 
-    private static void editTransaction(int index, String newDate, String newType, String newCategory, float newAmount, String newDescription) 
-    {
-        if (index < 0 || index >= transactions.size()) 
-        {
-            System.out.println("Invalid transaction index.");
+    private static void editTransaction() {
+        if (transactions.isEmpty()) {
+            System.out.println("No transactions to edit.");
             return;
         }
 
-        try 
-        {
-            Transaction t = transactions.get(index);
-            t.setDate(newDate);
-            t.setType(newType);
-            t.setCategory(newCategory);
-            t.setAmount(newAmount);
-            t.setNotes(newDescription);
-            System.out.println("Transaction updated.");
-        } 
-        catch (IllegalArgumentException e) 
-        {
-            System.out.println("Failed to edit transaction: " + e.getMessage());
+        // Display existing transactions with indices
+        for (int i = 0; i < transactions.size(); i++) {
+            Transaction t = transactions.get(i);
+            System.out.println(i + ": " + t.getDate() + " | " + t.getType() + " | " +
+                            t.getCategory() + " | $" + t.getAmount() + " | " + t.getNotes());
         }
+
+        System.out.print("Enter the index of the transaction to edit: ");
+        int index;
+        try {
+            index = Integer.parseInt(scanner.nextLine());
+            if (index < 0 || index >= transactions.size()) {
+                System.out.println("Invalid transaction index.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a valid number.");
+            return;
+        }
+
+        Transaction t = transactions.get(index);
+
+        // Prompt for new values
+        System.out.print("Enter new date (YYYY-MM-DD) [" + t.getDate() + "]: ");
+        String newDate = scanner.nextLine();
+        if (!newDate.isBlank()) t.setDate(newDate);
+
+        System.out.print("Enter new type (income/expense) [" + t.getType() + "]: ");
+        String newType = scanner.nextLine();
+        if (!newType.isBlank()) t.setType(newType);
+
+        System.out.print("Enter new category [" + t.getCategory() + "]: ");
+        String newCategory = scanner.nextLine();
+        if (!newCategory.isBlank()) t.setCategory(newCategory);
+
+        System.out.print("Enter new amount [" + t.getAmount() + "]: ");
+        String newAmountStr = scanner.nextLine();
+        if (!newAmountStr.isBlank()) {
+            try {
+                float newAmount = Float.parseFloat(newAmountStr);
+                if (newAmount >= 0) {
+                    t.setAmount(newAmount);
+                } else {
+                    System.out.println("Amount must be non-negative. Skipping.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid amount. Skipping.");
+            }
+        }
+
+        System.out.print("Enter new description [" + t.getNotes() + "]: ");
+        String newDescription = scanner.nextLine();
+        if (!newDescription.isBlank()) t.setNotes(newDescription);
+
+        System.out.println("Transaction updated.");
     }
+
  
     private static void deleteTransaction(int index) 
     {
